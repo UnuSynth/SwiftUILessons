@@ -11,7 +11,8 @@ import SwiftUI
 struct LandmarksApp: App {
     var body: some Scene {
         WindowGroup {
-            LandmarkList(landmarks: JSONLoader.load("landmarkData.json") ?? .init())
+            LandmarkList()
+                .environmentObject(ModelData())
         }
     }
 }

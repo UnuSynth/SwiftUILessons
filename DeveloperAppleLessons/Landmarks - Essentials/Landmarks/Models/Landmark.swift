@@ -20,6 +20,7 @@ struct Landmark: Codable, Hashable, Identifiable {
     var park: String
     var state: String
     var description: String
+    var isFavorite: Bool
     
     private var imageName: String
     
@@ -36,7 +37,7 @@ struct Landmark: Codable, Hashable, Identifiable {
         )
     }
     
-    init(id: Int = 0, name: String = "test", park: String = "test", state: String = "test", description: String = "testest", imageName: String = "turtlerock", coordinates: Coordinates = .init(latitude: 0, longitude: 0)) {
+    init(id: Int = 0, name: String = "test", park: String = "test", state: String = "test", description: String = "testest", imageName: String = "turtlerock", coordinates: Coordinates = .init(latitude: 0, longitude: 0), isFavorite: Bool = true) {
         self.id = id
         self.name = name
         self.park = park
@@ -44,5 +45,6 @@ struct Landmark: Codable, Hashable, Identifiable {
         self.description = description
         self.imageName = imageName
         self.coordinates = coordinates
+        self.isFavorite = isFavorite
     }
 }
