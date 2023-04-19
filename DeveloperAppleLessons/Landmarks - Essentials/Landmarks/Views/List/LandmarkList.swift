@@ -8,29 +8,39 @@
 import SwiftUI
 
 struct LandmarkList: View {
-    private var landmarks: [Landmark]
+    @EnvironmentObject var modelData: ModelData
+    @State private var showFavoritesOnly: Bool = false
     
-    var body: some View {
-        NavigationView {
-            List(landmarks) { landmark in
-                NavigationLink {
-                    LandmarkDetailView(landmark: landmark)
-                } label: {
-                    LandmarkRow(landmark: landmark)
-                }
-            }.navigationTitle("Landmarks")
+    var filteredLandmarks: [Landmark] {
+        modelData.landmarks.filter { landmark in
+            (!showFavoritesOnly || landmark.isFavorite)
         }
     }
     
-    init(landmarks: [Landmark]) {
-        self.landmarks = landmarks
+    var body: some View {
+        NavigationView {
+            List {
+                Toggle(isOn: $showFavoritesOnly) {
+                    Text("Favorites only")
+                }
+                
+                ForEach(filteredLandmarks) { landmark in
+                    NavigationLink {
+                        LandmarkDetailView(landmark: landmark)
+                    } label: {
+                        LandmarkRow(landmark: landmark)
+                    }
+                }.navigationTitle("Landmarks")
+            }
+        }
     }
 }
 
 struct LandmarkList_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(["iPhone SE (3rd generation)", "iPhone 14", "iPad Pro (12.9-inch) (6th generation)"], id: \.self) { deviceName in
-            LandmarkList(landmarks: JSONLoader.load("landmarkData.json") ?? .init())
+            LandmarkList()
+                .environmentObject(ModelData())
                 .previewDevice(PreviewDevice(rawValue: deviceName))
                 .previewDisplayName(deviceName)
         }

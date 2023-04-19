@@ -6,6 +6,11 @@
 //
 
 import Foundation
+import Combine
+
+final class ModelData: ObservableObject {
+    @Published var landmarks: [Landmark] = JSONLoader.load("landmarkData.json") ?? []
+}
 
 enum JSONLoader {
     static func load<T: Decodable>(_ filename: String) -> T? {
